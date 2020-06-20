@@ -1,0 +1,145 @@
+import turtle
+
+
+def stop():
+    turtle.bye()
+    root.destroy()
+    exit()
+
+
+pen = turtle.Turtle()
+pen.hideturtle()
+
+for i in range(2) :
+    pen.forward(80)
+    pen.left(90)
+    pen.forward(30)
+    pen.left(90)
+pen.penup()
+pen.goto(7, 6)
+pen.write("click to start!", font=("Arial",12,"normal"))
+
+
+
+def btnclick(x,y):
+    if x > 0 and x < 81 and y > 0 and y < 30:
+        print("welcome to my first game!");
+        turtle.onscreenclick(stop)
+
+       
+    
+    
+    #creates the screen    
+    wn = turtle.Screen()
+    wn.bgcolor("black")
+    wn.title("Callans Game")
+    wn.setup(width=600, height=600)
+    
+    #Score
+    score_a = 0
+        
+
+    #creates the ball
+    ball = turtle.Turtle()
+    ball.shape("circle")
+    ball.color("green")
+    ball.penup()
+    ball.speed(0)
+    ball.goto(0, 100)
+    
+    
+    #Pen
+    pen = turtle.Turtle()
+    pen.speed = (0)
+    pen.color("white")
+    pen.penup()
+    pen.hideturtle()
+    pen.goto(0, 265)
+    pen.write("Score: 0", align="center", font=("Comic Sans MS", 24, "normal"))
+
+    #create the paddle
+    paddle = turtle.Turtle()    
+    paddle.shape('square')      
+    paddle.speed(0)             
+    paddle.shapesize(stretch_wid=1, stretch_len=5)   
+    paddle.penup()
+    paddle.color('white')       
+    paddle.goto(0, -275)        
+
+        
+    #function
+    def paddle_right():
+        x = paddle.xcor()
+        if x < 225:
+            paddle.setx(x+20)
+    
+    def paddle_left():
+        x = paddle.xcor()
+        if x > -225:
+            paddle.setx(x-20)
+            
+            
+    #keyboard binding
+    wn.listen()
+    wn.onkey(paddle_right, "Right")
+    wn.onkey(paddle_left, "Left")
+
+    
+    ball.dx = 3  
+    ball.dy = -3   
+        
+        
+    # main game loop
+    while True:
+        wn.update()
+        
+        ball.setx(ball.xcor() + ball.dx)  
+        ball.sety(ball.ycor() + ball.dy)
+        
+      
+    
+        
+        #border checking
+        if ball.xcor() > 290:   
+            ball.setx(290)
+            ball.dx *= -1
+            
+            
+                    
+        if ball.xcor() < -290:   
+            ball.setx(-290)
+            ball.dx *= -1
+            
+              
+
+        if ball.ycor() > 290:    
+            ball.sety(290)
+            ball.dy *= -1
+            
+            
+             
+                   
+
+        # Ball-Paddle collision
+        if abs(ball.ycor() + 250) < 2 and abs(paddle.xcor() - ball.xcor()) < 55:
+            ball.dy *= -1
+        
+            # Ball-Ground collison            
+        if ball.ycor() < -290:   
+            score_a += 1
+            pen.clear()
+            pen.write("Score: {} ".format(score_a), align="center", font=("Comic Sans MS", 24, "normal"))
+            ball.goto(0, 100)
+            
+              
+        
+        wn.update()
+            
+        
+       
+                
+
+turtle.onscreenclick(btnclick, 1)
+turtle.listen()
+
+turtle.done() 
